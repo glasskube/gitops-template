@@ -2,11 +2,11 @@
 
 Use this repository to get started with the glasskube-argo-gitops-stack easily.
 
-> At this very early stage, for simplicity we only support git repos that are accessible without any token.
-> Additionally, some manual changes from you will be necessary, as described below. 
-> These shortcomings will be resolved in a future version.
-
 ## Getting Started
+
+> At this very early stage, for simplicity we only support git repos that are accessible without any token.
+> Additionally, some manual changes from you will be necessary, as described below.
+> These shortcomings will be resolved in a future version.
 
 **Prerequisites**
 
@@ -22,3 +22,19 @@ Use this repository to get started with the glasskube-argo-gitops-stack easily.
 As a result, your cluster will be powered with GitOps capabilities by ArgoCD, as well as package management features by
 Glasskube. Argo manages itself, the Glasskube installation as well as Glasskube packages, which you can now manage
 GitOps-style with this repo. 
+
+**Temporary: Making your repo private**
+
+TBA
+
+## Managing your cluster
+
+### Installing packages
+
+### Updating packages
+
+### Updating Glasskube
+
+## Known Issues
+
+## Summary
