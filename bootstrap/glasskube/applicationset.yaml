@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: glasskube-packages
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - git:
+        repoURL: https://github.com/glasskube/glasskube-argocd-starter # TODO before launching, set this to something non-working
+        revision: dev # TODO HEAD
+        directories:
+          - path: 'packages/*'
+  template:
+    metadata:
+      name: '{{ .path.basename }}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/glasskube/glasskube-argocd-starter # TODO before launching, set this to something non-working
+        targetRevision: dev # TODO HEAD
+        path: '{{.path.path}}'
+      destination:
+        server: https://kubernetes.default.svc
