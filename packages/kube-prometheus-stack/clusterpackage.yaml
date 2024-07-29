@@ -10,11 +10,7 @@ spec:
     version: v58.6.1+1
   values:
     alertmanagerEnabled:
-      valueFrom:
-        configMapRef:
-          key: ""
-          name: asdf
-          namespace: adsf
+      value: "false"
     grafanaDomain:
       value: ""
     grafanaEnabled:
