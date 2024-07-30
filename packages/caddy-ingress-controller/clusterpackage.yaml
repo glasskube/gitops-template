@@ -10,4 +10,4 @@ spec:
     version: v1.1.0+1
   values:
     automaticHTTPS:
-      value: test
+      value: ""
