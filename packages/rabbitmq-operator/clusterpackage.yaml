@@ -7,4 +7,4 @@ spec:
   packageInfo:
     name: rabbitmq-operator
     repositoryName: glasskube
-    version: v2.8.0+1
+    version: v2.9.0+1
