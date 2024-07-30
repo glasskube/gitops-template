@@ -130,6 +130,6 @@ TBA
 
 ## Feedback
 
-We love feedback! Whether you are just starting out or you are a seasoned professional, we'd like to hear your thoughts
-on this starter template and corresponding guide here, in the [glasskube/glasskube repo](https://github.com/glasskube/glasskube) or on
-our Discord. Thanks!
+We love feedback! Whether you are just starting out or you are a seasoned professional, we'd like to hear your thoughts, inputs and questions
+regarding this starter template and corresponding guide here, in the [glasskube/glasskube repo](https://github.com/glasskube/glasskube) or on
+our [Discord](https://discord.gg/SxH6KUCGH7). Thanks!
