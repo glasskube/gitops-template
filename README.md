@@ -84,7 +84,9 @@ packageInfo:
 in all the repo's yaml files, where the `depName` and `currentValue` will be used by renovate to extract the current version of this (cluster-)package.
 
 The regex-based approach has some limitations (see below), and they will be resolved with the custom Glasskube Renovate manager.
-However, we can still show that on a general level, Glasskube packages can be updated successfully with this.
+However, we can still show that on a general level, Glasskube packages can be updated successfully with this: As soon as one of
+the installed Glasskube packages uses an outdated version, renovate will open a Pull Request to update to the latest version,
+which you only need to approve and merge. 
 
 One issue with this regex-based approach is, that `name` and `version` have to appear in that order, even though schematically it would also be correct the other way around.
 
@@ -103,6 +105,31 @@ To uninstall a package or a clusterpackage, simply remove the custom resource fr
 
 ### Updating Glasskube
 
+TBA
+
 ## Known Issues
 
+### Limited Renovate Integration
+
+As described above, the renovate integration currently is regex-based, and it does not consider dependencies yet. However,
+for non-production clusters it is ready to be used!
+
+### Dependency Resolution
+
+Installing packages with dependencies is not 100% GitOps-compatible yet, as the dependencies will be created by the operator.
+Consider this: To install a clusterpackage `P` that has a dependency on `D`, one would do `glasskube install P --dry-run -o yaml`, which
+would output the clusterpackage custom resource for `P`. However, the dependency `D` will only be resolved at reconciliation time by
+the package operator, and will therefore not be represented in the git repository at all. A temporary workaround would be to have a closer look
+at the output of the `install` command, which also shows the dependencies which will be installed and in which version. One could then
+manually add the required packages custom resources to the git repo as well. However, this will be tackled in a future version to make the
+user experience better, see [glasskube/glasskube#430](https://github.com/glasskube/glasskube/issues/430).
+
 ## Summary
+
+TBA
+
+## Feedback
+
+We love feedback! Whether you are just starting out or you are a seasoned professional, we'd like to hear your thoughts
+on this starter template and corresponding guide here, in the [glasskube/glasskube repo](https://github.com/glasskube/glasskube) or on
+our Discord. Thanks!
