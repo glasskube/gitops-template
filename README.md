@@ -6,12 +6,12 @@ Use this repository as a template to get started with the glasskube-argo-gitops-
 
 > At this very early stage, for simplicity we only support GitHub repos that are accessible without any token (this applies only
 > for the bootstrapping step – afterwards you can move the repo somewhere else and/or make it private).
-> Additionally, some manual changes from you will be necessary, as described below.
+> Additionally, one simple manual change from you will be necessary, as described below.
 > These shortcomings will be resolved in a future version.
 
 **Prerequisites**
 
-* You should have access to an empty kubernetes cluster in the form of a kubeconfig file on your machine.
+* Access to an empty Kubernetes cluster
 * Glasskube CLI should be installed on your machine, but Glasskube should **not be bootstrapped** yet in the cluster.
 
 **Installation**
@@ -41,16 +41,16 @@ will also output the `yaml` objects which you can copy to use in your git repo, 
 
 ### Installing packages
 
-To install a clusterpackage, e.g. `cert-manager` use the `install` command like this:
+To install a clusterpackage, e.g. `cert-manager`, use the `install` command like this:
 
 ```shell
-$ glasskube install cert-manager --dry-run -o yaml --yes > cert-manager.yaml
+glasskube install cert-manager --dry-run -o yaml --yes > cert-manager.yaml
 ```
 
-The `cert-manager.yaml` file contains the `ClusterPackage` custom resource, that can now be put into a new directory
-`packages/cert-manager/` in the git repository. Once pushed to the repo, ArgoCD will pick up the changes after at most 
-5 minutes, create the ArgoCD `Application` wrapping the Glasskube `ClusterPackage`. After that, the Glasskube operator will pick
-up the `ClusterPackage` and finally install it in the cluster.
+Instead of directly installing the clusterpackage, this will write the `ClusterPackage` custom resource to the `cert-manager.yaml` file, 
+which can now be put into a new directory `packages/cert-manager/` in the git repository. 
+Once pushed to the repo, ArgoCD will pick up the changes after at most 5 minutes, create the ArgoCD `Application` wrapping 
+the Glasskube `ClusterPackage`. After that, the Glasskube operator will pick up the `ClusterPackage` and finally install it in the cluster.
 
 Similarly, when using the Glasskube UI, one can generate the `ClusterPackage` resource by using the "Show YAML" button 
 on the page of the clusterpackage.
@@ -71,9 +71,9 @@ task, as explained in the following.
 Renovate Glasskube Support is still work in progress (see [renovatebot/renovate#29322](https://github.com/renovatebot/renovate/issues/29322)),
 but we will show a proof of concept with the already available datasource/versioning part.
 
-You can use the Renovate Github App and enable it for your GitOps repo. 
+Therefore, install the [Renovate Github App](https://github.com/apps/renovate) and enable it for your GitOps repo.
 
-The given `renovate.json` contains a `regexManagers`, which simply looks for all appearances of
+The renovate configuration of this starter repo (`renovate.json`) contains a `regexManager`, looking for all appearances of
 
 ```yaml
 packageInfo:
@@ -81,12 +81,12 @@ packageInfo:
   version: <currentValue>
 ```
 
-in all the repo's yaml files, where the `depName` and `currentValue` will be used by renovate to extract the current version of this (cluster-)package.
+in all the repo's yaml files. `depName` and `currentValue` will be used by renovate to extract the current version of this (cluster-)package.
 
-The regex-based approach has some limitations (see below), and they will be resolved with the custom Glasskube Renovate manager.
-However, we can still show that on a general level, Glasskube packages can be updated successfully with this: As soon as one of
+The regex-based approach has some limitations (see below) which will be resolved with the custom Glasskube Renovate manager.
+However, we can show that on a general level, Glasskube packages can be updated successfully with this: As soon as one of
 the installed Glasskube packages uses an outdated version, renovate will open a Pull Request to update to the latest version,
-which you only need to approve and merge. 
+which you only need to approve and merge.
 
 One issue with this regex-based approach is, that `name` and `version` have to appear in that order, even though schematically it would also be correct the other way around.
 
@@ -97,7 +97,8 @@ That means, it will simply always try to update to the latest version, instead o
 actually allowed in the used cluster. As a consequence, this could lead to somebody installing a version that is not allowed 
 because of dependency restrictions, however, the package operator will not actually install it. 
 The package status would be set to "Failed" with an error message indicating the dependency conflict, 
-but the previously installed version of the package would not be touched/destroyed.
+but the previously installed version of the package would not be touched/destroyed. In such a case, you would have to manually
+intervene and roll back to the previously used package version. 
 
 ### Uninstalling packages
 
@@ -108,20 +109,36 @@ To uninstall a package or a clusterpackage, simply remove the custom resource fr
 When a new Glasskube version is available, the manifests have to be updated. Run
 
 ```shell
-$ glasskube bootstrap --dry-run -o yaml > bootstrap/glasskube/manifests.yaml
+glasskube bootstrap --dry-run -o yaml > bootstrap/glasskube/manifests.yaml
 ```
 
 to update the Glasskube manifests in your git repo. After reviewing and merging those changes the update will be picked up
 by ArgoCD.
 
-## Known Issues
+## Repository Structure
 
-### Limited Renovate Integration
+Initially, this repository will come with
+* a `bootstrap` directory containing the initial/parent Argo `Application`, and the necessary Glasskube manifests
+* a `packages` directory containing the `argo-cd` cluster package. 
+* the renovate configuration in `renovate.json`. 
+
+Glasskube custom resources will only be picked up by Argo when being put inside the `packages` directory. Please do not
+delete/uninstall the `argo-cd` package, as this will also remove everything else!
+
+## Upcoming Features
+
+### Private Repo Support
+
+We are aware that GitOps repositories should not be public, but for simplicity we omitted this feature in the first version
+of the new gitops-bootstrap command. Supporting private repos with authentication of course has high priority for the upcoming releases. 
+We will also replace the `repoURL` automatically, such that you don't need to this step manually when setting up the repo.
+
+### Improved Renovate Integration
 
 As described above, the renovate integration currently is regex-based, and it does not consider dependencies yet.
 However, we don't see these shortcomings as a blocker and recommend to try out the renovate integration in the Glasskube/Argo Gitops setup.
 
-### Dependency Resolution
+### Improved Dependency Resolution
 
 Installing packages with dependencies is not 100% GitOps-compatible yet, as the dependencies will be created by the operator.
 Consider this: To install a clusterpackage `P` that has a dependency on `D`, one would do `glasskube install P --dry-run -o yaml`, which
