@@ -8,7 +8,7 @@ spec:
   goTemplateOptions: ["missingkey=error"]
   generators:
     - git:
-        repoURL: PUT-YOUR-REPO-URL-HERE
+        repoURL: https://github.com/username/repository # put your own repo url here
         revision: HEAD
         directories:
           - path: 'packages/*'
@@ -18,7 +18,7 @@ spec:
     spec:
       project: default
       source:
-        repoURL: PUT-YOUR-REPO-URL-HERE
+        repoURL: https://github.com/username/repository # put your own repo url here
         targetRevision: HEAD
         path: '{{.path.path}}'
       destination:

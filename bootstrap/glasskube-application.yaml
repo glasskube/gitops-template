@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     path: bootstrap/glasskube
-    repoURL: PUT-YOUR-REPO-URL-HERE
+    repoURL: https://github.com/username/repository # put your own repo url here
     targetRevision: HEAD
   syncPolicy:
     automated:
