@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: glasskube-packages
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - git:
+        repoURL: https://github.com/username/repository # put your own repo url here
+        revision: HEAD
+        directories:
+          - path: 'packages/*'
+  template:
+    metadata:
+      name: '{{ .path.basename }}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/username/repository # put your own repo url here
+        targetRevision: HEAD
+        path: '{{.path.path}}'
+      destination:
+        server: https://kubernetes.default.svc
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
