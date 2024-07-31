@@ -9,8 +9,8 @@ spec:
   project: default
   source:
     path: bootstrap/glasskube
-    repoURL: https://github.com/glasskube/glasskube-argocd-starter # TODO before launching, set this to something non-working
-    targetRevision: dev # TODO HEAD
+    repoURL: PUT-YOUR-REPO-URL-HERE
+    targetRevision: HEAD
   syncPolicy:
     automated:
       prune: true

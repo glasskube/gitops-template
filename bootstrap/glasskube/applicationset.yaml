@@ -8,8 +8,8 @@ spec:
   goTemplateOptions: ["missingkey=error"]
   generators:
     - git:
-        repoURL: https://github.com/glasskube/glasskube-argocd-starter # TODO before launching, set this to something non-working
-        revision: dev # TODO HEAD
+        repoURL: PUT-YOUR-REPO-URL-HERE
+        revision: HEAD
         directories:
           - path: 'packages/*'
   template:
@@ -18,8 +18,8 @@ spec:
     spec:
       project: default
       source:
-        repoURL: https://github.com/glasskube/glasskube-argocd-starter # TODO before launching, set this to something non-working
-        targetRevision: dev # TODO HEAD
+        repoURL: PUT-YOUR-REPO-URL-HERE
+        targetRevision: HEAD
         path: '{{.path.path}}'
       destination:
         server: https://kubernetes.default.svc

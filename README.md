@@ -105,14 +105,21 @@ To uninstall a package or a clusterpackage, simply remove the custom resource fr
 
 ### Updating Glasskube
 
-TBA
+When a new Glasskube version is available, the manifests have to be updated. Run
+
+```shell
+$ glasskube bootstrap --dry-run -o yaml > bootstrap/glasskube/manifests.yaml
+```
+
+to update the Glasskube manifests in your git repo. After reviewing and merging those changes the update will be picked up
+by ArgoCD.
 
 ## Known Issues
 
 ### Limited Renovate Integration
 
-As described above, the renovate integration currently is regex-based, and it does not consider dependencies yet. However,
-for non-production clusters it is ready to be used!
+As described above, the renovate integration currently is regex-based, and it does not consider dependencies yet.
+However, we don't see these shortcomings as a blocker and recommend to try out the renovate integration in the Glasskube/Argo Gitops setup.
 
 ### Dependency Resolution
 
@@ -126,9 +133,12 @@ user experience better, see [glasskube/glasskube#430](https://github.com/glassku
 
 ## Summary
 
-TBA
+With this template repository and guide we show how Glasskube can easily be set up in a ArgoCD powered Gitops environment, 
+and how efficient package management is possible with this stack.
 
-## Feedback
+This is a first concept with some minor shortcomings but we will continue to improve gitops support. 
+
+### Feedback
 
 We love feedback! Whether you are just starting out or you are a seasoned professional, we'd like to hear your thoughts, inputs and questions
 regarding this starter template and corresponding guide here, in the [glasskube/glasskube repo](https://github.com/glasskube/glasskube) or on
