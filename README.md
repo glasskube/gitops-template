@@ -11,8 +11,24 @@ Use this repository as a template to get started with the ArgoCD & Glasskube in 
 
 ### Prerequisites
 
-* Access to an empty Kubernetes cluster
-* Glasskube CLI should be installed on your machine, but Glasskube should **not be bootstrapped** yet in the cluster.
+#### Access to an empty Kubernetes cluster
+
+The easiest would be creating a new [Minikube](https://minikube.sigs.k8s.io/docs/start/) cluster with:
+
+```shell
+minikube start -p glasskube
+````
+Glasskube should not yet be bootstrapped in that cluster
+
+#### Install the Glasskube CLI
+
+Make sure to have at least [Glasskube](https://glasskube.dev/docs/getting-started/install/) version 0.16.0 installed locally.
+If not you can simply run:
+
+```shell
+brew install glasskube/tap/glasskube
+````
+
 
 ### Installation
 
