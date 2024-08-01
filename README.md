@@ -1,24 +1,58 @@
 # glasskube-argocd-starter
 
-Use this repository as a template to get started with the glasskube-argo-gitops-stack easily.
+Use this repository as a template to get started with the ArgoCD & Glasskube in seconds instead of hours.
 
 ## Getting Started
 
-> At this very early stage, for simplicity we only support GitHub repos that are accessible without any token (this applies only
-> for the bootstrapping step – afterwards you can move the repo somewhere else and/or make it private).
+> At this very early stage, for simplicity your GitHub repository must be public during the bootstrap step.
+> Afterward you can change the visibility of your repository and configure your `PAT` in ArgoCD.
 > Additionally, one simple manual change from you will be necessary, as described below.
 > These shortcomings will be resolved in a future version.
 
-**Prerequisites**
+### Prerequisites
 
-* Access to an empty Kubernetes cluster
-* Glasskube CLI should be installed on your machine, but Glasskube should **not be bootstrapped** yet in the cluster.
+#### Access to an empty Kubernetes cluster
 
-**Installation**
+The easiest would be creating a new [Minikube](https://minikube.sigs.k8s.io/docs/start/) cluster with:
 
-1. Create a public GitHub repository based on this starter template. You can move it and/or make it private afterwards.
-2. In `bootstrap/glasskube-application.yaml` and `bootstrap/glasskube/applicationset.yaml`, change the `repoURL` to your repository.
-3. Run `glasskube bootstrap gitops --repository <your-repo>`.
+```shell
+minikube start -p glasskube
+````
+Glasskube should not yet be bootstrapped in that cluster
+
+#### Install the Glasskube CLI
+
+Make sure to have at least [Glasskube](https://glasskube.dev/docs/getting-started/install/) version 0.16.0 installed locally.
+If not you can simply run:
+
+```shell
+brew install glasskube/tap/glasskube
+````
+
+
+### Installation
+
+
+#### 1. Use this repository as your GitOps template
+
+Create a public GitHub repository based on this starter template. You can move it and/or make it private afterward.
+
+#### 2. Replace the placeholder `repourl` in your GitOps repository
+
+Replace the default value of `repoURL` to your repository url.
+
+- Line 12 in: [`bootstrap/glasskube-application.yaml`](bootstrap/glasskube-application.yaml#L12)
+- Line 11 and 21 in: [`bootstrap/glasskube/applicationset.yaml`](bootstrap/glasskube/applicationset.yaml#L11-L21)
+
+#### 3. Bootstrap ArgoCD and Glasskube for your Kubernetes cluster (blocked by: [#1050](https://github.com/glasskube/glasskube/pull/1050)
+
+Make sure you are connected to the right cluster and execute:
+
+```shell
+glasskube bootstrap git --url <your-repo>
+```
+
+#### Result
 
 As a result, your cluster will be powered with GitOps capabilities by ArgoCD, as well as package management features by
 Glasskube. Argo manages itself, the Glasskube installation, as well as Glasskube packages – all of which you can now manage
@@ -28,7 +62,7 @@ Run `glasskube serve` to open the Glasskube UI and either open the ArgoCD UI the
 but of course you can also use the Argo CLI.
 Follow the [ArgoCD docs](https://argo-cd.readthedocs.io/en/stable/getting_started/#4-login-using-the-cli) to get and reset the password to log in.
 
-**Temporary: Making your repo private**
+#### Optional: Temporary: Making your repo private
 
 When the installation has succeeded you are free to make your source repository private. However, make sure to [configure
 the repository correctly](https://argo-cd.readthedocs.io/en/stable/user-guide/private-repositories/) in ArgoCD via UI or CLI, such that Argo can still access this repo. 
@@ -41,19 +75,19 @@ will also output the `yaml` objects which you can copy to use in your git repo, 
 
 ### Installing packages
 
-To install a clusterpackage, e.g. `cert-manager`, use the `install` command like this:
+To install a `ClusterPackage`, e.g. `cert-manager`, use the `install` command like this:
 
 ```shell
 glasskube install cert-manager --dry-run -o yaml --yes > cert-manager.yaml
 ```
 
-Instead of directly installing the clusterpackage, this will write the `ClusterPackage` custom resource to the `cert-manager.yaml` file, 
+Instead of directly installing the `ClusterPackage`, this will write the `ClusterPackage` custom resource to the `cert-manager.yaml` file, 
 which can now be put into a new directory `packages/cert-manager/` in the git repository. 
 Once pushed to the repo, ArgoCD will pick up the changes after at most 5 minutes, create the ArgoCD `Application` wrapping 
 the Glasskube `ClusterPackage`. After that, the Glasskube operator will pick up the `ClusterPackage` and finally install it in the cluster.
 
 Similarly, when using the Glasskube UI, one can generate the `ClusterPackage` resource by using the "Show YAML" button 
-on the page of the clusterpackage.
+on the page of the `ClusterPackage`.
 
 ### Updating packages
 
@@ -71,7 +105,7 @@ task, as explained in the following.
 Renovate Glasskube Support is still work in progress (see [renovatebot/renovate#29322](https://github.com/renovatebot/renovate/issues/29322)),
 but we will show a proof of concept with the already available datasource/versioning part.
 
-Therefore, install the [Renovate Github App](https://github.com/apps/renovate) and enable it for your GitOps repo.
+Therefore, install the [Renovate GitHub App](https://github.com/apps/renovate) and enable it for your GitOps repo.
 
 The renovate configuration of this starter repo (`renovate.json`) contains a `regexManager`, looking for all appearances of
 
@@ -81,7 +115,7 @@ packageInfo:
   version: <currentValue>
 ```
 
-in all the repo's yaml files. `depName` and `currentValue` will be used by renovate to extract the current version of this (cluster-)package.
+in all the repo's yaml files. `depName` and `currentValue` will be used by renovate to extract the current version of this (`Cluster`-)`Package`.
 
 The regex-based approach has some limitations (see below) which will be resolved with the custom Glasskube Renovate manager.
 However, we can show that on a general level, Glasskube packages can be updated successfully with this: As soon as one of
@@ -102,7 +136,7 @@ intervene and roll back to the previously used package version.
 
 ### Uninstalling packages
 
-To uninstall a package or a clusterpackage, simply remove the custom resource from the git repository. 
+To uninstall a package or a `ClusterPackage`, simply remove the custom resource from the git repository. 
 
 ### Updating Glasskube
 
@@ -130,7 +164,7 @@ delete/uninstall the `argo-cd` package, as this will also remove everything else
 ### Private Repo Support
 
 We are aware that GitOps repositories should not be public, but for simplicity we omitted this feature in the first version
-of the new gitops-bootstrap command. Supporting private repos with authentication of course has high priority for the upcoming releases. 
+of the new GitOps-bootstrap command. Supporting private repos with authentication of course has high priority for the upcoming releases. 
 We will also replace the `repoURL` automatically, such that you don't need to this step manually when setting up the repo.
 
 ### Improved Renovate Integration
@@ -141,8 +175,8 @@ However, we don't see these shortcomings as a blocker and recommend to try out t
 ### Improved Dependency Resolution
 
 Installing packages with dependencies is not 100% GitOps-compatible yet, as the dependencies will be created by the operator.
-Consider this: To install a clusterpackage `P` that has a dependency on `D`, one would do `glasskube install P --dry-run -o yaml`, which
-would output the clusterpackage custom resource for `P`. However, the dependency `D` will only be resolved at reconciliation time by
+Consider this: To install a `ClusterPackage` `<P>` that has a dependency on `D`, one would do `glasskube install <P> --dry-run -o yaml`, which
+would output the `ClusterPackage` custom resource for `<P>`. However, the dependency `D` will only be resolved at reconciliation time by
 the package operator, and will therefore not be represented in the git repository at all. A temporary workaround would be to have a closer look
 at the output of the `install` command, which also shows the dependencies which will be installed and in which version. One could then
 manually add the required packages custom resources to the git repo as well. However, this will be tackled in a future version to make the
@@ -153,7 +187,7 @@ user experience better, see [glasskube/glasskube#430](https://github.com/glassku
 With this template repository and guide we show how Glasskube can easily be set up in a ArgoCD powered Gitops environment, 
 and how efficient package management is possible with this stack.
 
-This is a first concept with some minor shortcomings but we will continue to improve gitops support. 
+This is a first concept with some minor shortcomings, but we will continue to improve GitOps support. 
 
 ### Feedback
 
