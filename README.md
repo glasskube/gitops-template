@@ -60,6 +60,8 @@ Run `glasskube serve` to open the Glasskube UI and either open the ArgoCD UI the
 but of course you can also use the Argo CLI.
 Follow the [ArgoCD docs](https://argo-cd.readthedocs.io/en/stable/getting_started/#4-login-using-the-cli) to get and reset the password to log in.
 
+Note that it might take a couple of minutes to start up ArgoCD, and for the initial GitOps sync to happen. 
+
 #### Optional: Temporary: Making your repo private
 
 When the installation has succeeded you are free to make your source repository private. However, make sure to [configure
