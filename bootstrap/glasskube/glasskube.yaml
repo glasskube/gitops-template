@@ -8,7 +8,9 @@ apiVersion: v1
 kind: Namespace
 metadata:
   annotations:
+    packages.glasskube.dev/gitops-mode-enabled: "true"
     packages.glasskube.dev/telemetry-enabled: "true"
+    packages.glasskube.dev/telemetry-id: 428dfce0-73f5-4d84-a0ea-0cf6e9ff2412
   labels:
     app.kubernetes.io/component: manager
     app.kubernetes.io/created-by: glasskube
@@ -9940,7 +9942,7 @@ spec:
         - --leader-elect
         command:
         - /package-operator
-        image: ghcr.io/glasskube/package-operator:v0.14.0
+        image: ghcr.io/glasskube/package-operator:v0.15.0
         livenessProbe:
           httpGet:
             path: /healthz
@@ -10020,7 +10022,7 @@ spec:
           containers:
           - command:
             - /cert-manager
-            image: ghcr.io/glasskube/package-operator:v0.14.0
+            image: ghcr.io/glasskube/package-operator:v0.15.0
             name: manager
             resources:
               limits:
@@ -10053,7 +10055,7 @@ spec:
       containers:
       - command:
         - /cert-manager
-        image: ghcr.io/glasskube/package-operator:v0.14.0
+        image: ghcr.io/glasskube/package-operator:v0.15.0
         name: manager
         resources:
           limits:
