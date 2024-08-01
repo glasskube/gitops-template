@@ -10045,8 +10045,6 @@ kind: Job
 metadata:
   name: glasskube-webhook-cert-init
   namespace: glasskube-system
-  annotations:
-    argocd.argoproj.io/sync-options: Force=true,Replace=true
 spec:
   template:
     spec:
