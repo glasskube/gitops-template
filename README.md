@@ -5,7 +5,7 @@ Use this repository as a template to get started with the ArgoCD & Glasskube in 
 ## Getting Started
 
 > At this very early stage, for simplicity your GitHub repository must be public during the bootstrap step.
-> Afterward you can change the visibility of your repository and configure your `PAT` in ArgoCD.
+> Afterward you can change the visibility of your repository and configure your preferred authentication method in ArgoCD.
 > Additionally, one simple manual change from you will be necessary, as described below.
 > These shortcomings will be resolved in a future version.
 
@@ -23,28 +23,26 @@ Glasskube should not yet be bootstrapped in that cluster
 #### Install the Glasskube CLI
 
 Make sure to have at least [Glasskube](https://glasskube.dev/docs/getting-started/install/) version 0.16.0 installed locally.
-If not you can simply run:
+If you don't, you can simply run:
 
 ```shell
 brew install glasskube/tap/glasskube
 ````
 
-
 ### Installation
-
 
 #### 1. Use this repository as your GitOps template
 
 Create a public GitHub repository based on this starter template. You can move it and/or make it private afterward.
 
-#### 2. Replace the placeholder `repourl` in your GitOps repository
+#### 2. Replace the placeholder `repoURL` in your GitOps repository
 
 Replace the default value of `repoURL` to your repository url.
 
 - Line 12 in: [`bootstrap/glasskube-application.yaml`](bootstrap/glasskube-application.yaml#L12)
 - Line 11 and 21 in: [`bootstrap/glasskube/applicationset.yaml`](bootstrap/glasskube/applicationset.yaml#L11-L21)
 
-#### 3. Bootstrap ArgoCD and Glasskube for your Kubernetes cluster (blocked by: [#1050](https://github.com/glasskube/glasskube/pull/1050)
+#### 3. Bootstrap ArgoCD and Glasskube for your Kubernetes cluster (blocked by: [#1050](https://github.com/glasskube/glasskube/pull/1050))
 
 Make sure you are connected to the right cluster and execute:
 
@@ -61,6 +59,8 @@ GitOps-style with this repo.
 Run `glasskube serve` to open the Glasskube UI and either open the ArgoCD UI there, or with the command `glasskube open argo-cd` –
 but of course you can also use the Argo CLI.
 Follow the [ArgoCD docs](https://argo-cd.readthedocs.io/en/stable/getting_started/#4-login-using-the-cli) to get and reset the password to log in.
+
+Note that it might take a couple of minutes to start up ArgoCD, and for the initial GitOps sync to happen. 
 
 #### Optional: Temporary: Making your repo private
 
@@ -143,11 +143,11 @@ To uninstall a package or a `ClusterPackage`, simply remove the custom resource 
 When a new Glasskube version is available, the manifests have to be updated. Run
 
 ```shell
-glasskube bootstrap --dry-run -o yaml > bootstrap/glasskube/manifests.yaml
+glasskube bootstrap --dry-run -o yaml --force > bootstrap/glasskube/glasskube.yaml
 ```
 
 to update the Glasskube manifests in your git repo. After reviewing and merging those changes the update will be picked up
-by ArgoCD.
+by ArgoCD. The `--force` flag is necessary for the command to continue manifest validation, even though failures occur. 
 
 ## Repository Structure
 
@@ -158,6 +158,9 @@ Initially, this repository will come with
 
 Glasskube custom resources will only be picked up by Argo when being put inside the `packages` directory. Please do not
 delete/uninstall the `argo-cd` package, as this will also remove everything else!
+
+Note that the parent application used to bootstrap (`bootstrap/glasskube-application.yaml`) will not be synced after the initial setup.
+If you want to change something about it, you will have to change the application via argo directly. 
 
 ## Upcoming Features
 

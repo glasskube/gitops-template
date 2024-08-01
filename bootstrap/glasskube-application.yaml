@@ -9,9 +9,11 @@ spec:
   project: default
   source:
     path: bootstrap/glasskube
-    repoURL: https://github.com/username/repository # put your own repo url here
+    repoURL: https://github.com/TODO/TODO # TODO put your own repo url here
     targetRevision: HEAD
   syncPolicy:
+    syncOptions:
+      - ApplyOutOfSyncOnly=true
     automated:
       prune: true
       selfHeal: true
