@@ -62,7 +62,7 @@ Follow the [ArgoCD docs](https://argo-cd.readthedocs.io/en/stable/getting_starte
 
 Note that it might take a couple of minutes to start up ArgoCD, and for the initial GitOps sync to happen. 
 
-In this template, for demonstration purposes we also install the `cloudnative-pg` clusterpackage and a bookmarking 
+In this template, for demonstration purposes we also install the `cloudnative-pg` and `kube-prometheus-stack` clusterpackage and a bookmarking 
 application ([shiori](https://github.com/go-shiori/shiori)), which is making use of `cloudnative-pg`. 
 
 #### Optional: Temporary: Making your repo private
@@ -159,14 +159,30 @@ Its manifests are defined in `apps/shiori`, which is a pattern you can follow fo
 
 In a minikube environment, two manual steps are required to access the application (for more information consult the 
 [minikube docs](https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube/)):
-* Run `minikube addons enable ingress`.
-* Run `minikube ip` and add the line `<your-IP> my-shiori.example` to your `/etc/hosts` file. 
+* Run `minikube addons enable ingress -p glasskube`.
+* Run `minikube ip -p glasskube` and add the line `<your-IP> my-shiori.example` to your `/etc/hosts` file. 
 
 After that you will be able to access the application via [http://my-shiori.example](http://my-shiori.example) in your browser. 
 The default login credentials are `shiori` / `gopher` – for more information check the [shiori docs](https://github.com/go-shiori/shiori/tree/master/docs).
 
 In general, you can use the `apps` directory to deploy such custom applications into your cluster. Any subdirectory will be
 picked up by ArgoCD and grouped as an `Application`. 
+
+### Monitoring with `kube-prometheus-stack`
+
+This template also installs the `kube-prometheus-stack` clusterpackage, which is an easy way to get started with monitoring your cluster.
+You can open Grafana with `glasskube open kube-prometheus-stack`. It does not come preconfigured in this example, but you 
+can easily add a nice postgres dashboard and observe the metrics of the database while you are working with the bookmarking application.
+
+#### Setting up a postgres dashboard
+
+We are going to make use of the [cloudnativepg dashboard](https://grafana.com/grafana/dashboards/20417-cloudnativepg/).
+Import it by opening the [dashboard-import page](http://localhost:8888/dashboard/import), pasting
+[https://grafana.com/grafana/dashboards/20417-cloudnativepg/](https://grafana.com/grafana/dashboards/20417-cloudnativepg/)
+into the first textfield, and pressing "Load". Use the "Prometheus" data source on the following screen and finish the import process.
+
+Of course monitoring your experimental minikube cluster is a bit of an overkill, but this is simply to demonstrate how
+these kind of cluster administration tasks can be integrated into this gitops stack. 
 
 ## Repository Structure
 
