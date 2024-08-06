@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: shiori
+  name: shiori
+  namespace: shiori
+spec:
+  ports:
+    - nodePort: 32246
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: shiori
+  type: NodePort
+

@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: glasskube-packages
+  name: applications
   namespace: argocd
 spec:
   goTemplate: true
@@ -12,6 +12,11 @@ spec:
         revision: HEAD
         directories:
           - path: 'packages/*'
+    - git:
+        repoURL: https://github.com/TODO/TODO # TODO put your own repo url here
+        revision: HEAD
+        directories:
+          - path: 'apps/*'
   template:
     metadata:
       name: '{{ .path.basename }}'

@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: shiori
+  namespace: shiori
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: my-shiori.example
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: shiori
+                port:
+                  number: 8080
