@@ -1,0 +1,23 @@
+apiVersion: packages.glasskube.dev/v1alpha1
+kind: ClusterPackage
+metadata:
+  name: kube-prometheus-stack
+spec:
+  packageInfo:
+    name: kube-prometheus-stack
+    repositoryName: glasskube
+    version: v61.6.0+1
+  values:
+    alertmanagerEnabled:
+      value: "false"
+    grafanaDomain:
+      value: ""
+    grafanaEnabled:
+      value: "true"
+    prometheusNodeExporterHostNetwork:
+      value: "true"
+    prometheusRetention:
+      value: 30d
+    prometheusStorageSize:
+      value: 10Gi
+
