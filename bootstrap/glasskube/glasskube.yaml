@@ -9940,7 +9940,7 @@ spec:
         - --leader-elect
         command:
         - /package-operator
-        image: ghcr.io/glasskube/package-operator:v0.15.0
+        image: ghcr.io/glasskube/package-operator:v0.16.0
         livenessProbe:
           httpGet:
             path: /healthz
@@ -10020,7 +10020,7 @@ spec:
           containers:
           - command:
             - /cert-manager
-            image: ghcr.io/glasskube/package-operator:v0.15.0
+            image: ghcr.io/glasskube/package-operator:v0.16.0
             name: manager
             resources:
               limits:
@@ -10043,6 +10043,8 @@ spec:
 apiVersion: batch/v1
 kind: Job
 metadata:
+  annotations:
+    argocd.argoproj.io/sync-options: Force=true,Replace=true
   name: glasskube-webhook-cert-init
   namespace: glasskube-system
 spec:
@@ -10051,7 +10053,7 @@ spec:
       containers:
       - command:
         - /cert-manager
-        image: ghcr.io/glasskube/package-operator:v0.15.0
+        image: ghcr.io/glasskube/package-operator:v0.16.0
         name: manager
         resources:
           limits:
