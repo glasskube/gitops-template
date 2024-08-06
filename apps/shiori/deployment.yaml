@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shiori
+  namespace: shiori
+  labels:
+    app: shiori
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shiori
+  template:
+    metadata:
+      labels:
+        app: shiori
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+      volumes:
+        - name: app
+          persistentVolumeClaim:
+            claimName: shiori-data
+      containers:
+        - name: shiori
+          image: ghcr.io/go-shiori/shiori:latest
+          command: ["/usr/bin/shiori", "server"]
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+              name: http
+          volumeMounts:
+            - mountPath: /srv/shiori
+              name: app
+          envFrom:
+            - secretRef:
+                name: postgres-app
+          env:
+            - name: SHIORI_DIR
+              value: /srv/shiori
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-app
+                  key: password
+            - name: SHIORI_DATABASE_URL
+              value: "postgres://shiori:$(DB_PASS)@postgres-rw/shiori"

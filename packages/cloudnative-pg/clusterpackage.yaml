@@ -1,9 +1,10 @@
 apiVersion: packages.glasskube.dev/v1alpha1
 kind: ClusterPackage
 metadata:
-  name: argo-cd
+  name: cloudnative-pg
 spec:
   packageInfo:
-    name: argo-cd
+    name: cloudnative-pg
     repositoryName: glasskube
-    version: v2.11.7+1
+    version: v1.23.2+1
+
