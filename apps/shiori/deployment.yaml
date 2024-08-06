@@ -16,13 +16,12 @@ spec:
         app: shiori
     spec:
       securityContext:
+        runAsNonRoot: true
         runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
       volumes:
         - name: app
-          hostPath:
-            path: /path/to/data/dir
+          persistentVolumeClaim:
+            claimName: shiori-data
       containers:
         - name: shiori
           image: ghcr.io/go-shiori/shiori:latest
@@ -30,6 +29,7 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
+              name: http
           volumeMounts:
             - mountPath: /srv/shiori
               name: app

@@ -1,7 +1,6 @@
 apiVersion: packages.glasskube.dev/v1alpha1
 kind: ClusterPackage
 metadata:
-  creationTimestamp: null
   name: argo-cd
 spec:
   packageInfo:

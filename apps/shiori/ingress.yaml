@@ -4,7 +4,6 @@ metadata:
   name: shiori
   namespace: shiori
 spec:
-  ingressClassName: nginx
   rules:
     - host: my-shiori.example
       http:
@@ -15,4 +14,4 @@ spec:
               service:
                 name: shiori
                 port:
-                  number: 8080
+                  name: http
