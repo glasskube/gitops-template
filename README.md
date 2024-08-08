@@ -1,6 +1,6 @@
 # gitops-template
 
-Use this repository as a template to get started with ArgoCD & Glasskube in seconds instead of hours.
+Use this repository as a template to get started with ArgoCD & Glasskube in minutes instead of hours.
 
 ## Getting Started
 
@@ -16,7 +16,7 @@ Use this repository as a template to get started with ArgoCD & Glasskube in seco
 The easiest would be creating a new [Minikube](https://minikube.sigs.k8s.io/docs/start/) cluster with:
 
 ```shell
-minikube start -p glasskube
+minikube start -p gitops
 ````
 Glasskube should not yet be bootstrapped in that cluster
 
@@ -159,8 +159,8 @@ Its manifests are defined in `apps/shiori`, which is a pattern you can follow fo
 
 In a minikube environment, two manual steps are required to access the application (for more information consult the 
 [minikube docs](https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube/)):
-* Run `minikube addons enable ingress -p glasskube`.
-* Run `minikube ip -p glasskube` and add the line `<your-IP> my-shiori.example` to your `/etc/hosts` file. 
+* Run `minikube addons enable ingress -p gitops`.
+* Run `minikube ip -p gitops` and add the line `<your-IP> my-shiori.example` to your `/etc/hosts` file. 
 
 After that you will be able to access the application via [http://my-shiori.example](http://my-shiori.example) in your browser. 
 The default login credentials are `shiori` / `gopher` – for more information check the [shiori docs](https://github.com/go-shiori/shiori/tree/master/docs).
