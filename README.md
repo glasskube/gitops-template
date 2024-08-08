@@ -60,9 +60,9 @@ Run `glasskube serve` to open the Glasskube UI and either open the ArgoCD UI the
 but of course you can also use the Argo CLI.
 Follow the [ArgoCD docs](https://argo-cd.readthedocs.io/en/stable/getting_started/#4-login-using-the-cli) to get and reset the password to log in.
 
-Note that it might take a couple of minutes to start up ArgoCD, and for the initial GitOps sync to happen. 
+Note that it might take a couple of minutes for ArgoCD to start up, and for the initial GitOps sync to happen. 
 
-In this template, for demonstration purposes we also install the `cloudnative-pg` and `kube-prometheus-stack` clusterpackage and a bookmarking 
+In this template, for demonstration purposes we also install the `cloudnative-pg` and `kube-prometheus-stack` clusterpackage as well as a bookmarking 
 application ([shiori](https://github.com/go-shiori/shiori)), which is making use of `cloudnative-pg`. 
 
 #### Optional: Temporary: Making your repo private
@@ -72,8 +72,7 @@ the repository correctly](https://argo-cd.readthedocs.io/en/stable/user-guide/pr
 
 ## Managing your cluster
 
-Both CLI and UI offer features to manage your cluster following GitOps best practices: The relevant CLI commands offer
-the flags `--dry-run` and `-o yaml`. The UI, when installed with the above `glasskube bootstrap gitops` command, 
+Both CLI and UI offer features to manage your cluster according to GitOps best practices: CLI commands include `--dry-run` and `-o yaml` flags. The UI, when installed with the above `glasskube bootstrap git` command, 
 will also output the `yaml` objects which you can copy to use in your git repo, instead of applying your changes directly. 
 
 ### Installing packages
@@ -84,13 +83,12 @@ To install a `ClusterPackage`, e.g. `cert-manager`, use the `install` command li
 glasskube install cert-manager --dry-run -o yaml --yes > cert-manager.yaml
 ```
 
-Instead of directly installing the `ClusterPackage`, this will write the `ClusterPackage` custom resource to the `cert-manager.yaml` file, 
+Instead of directly installing the `ClusterPackage`, this command writes the `ClusterPackage` custom resource to the `cert-manager.yaml` file, 
 which can now be put into a new directory `packages/cert-manager/` in the git repository. 
 Once pushed to the repo, ArgoCD will pick up the changes after at most 5 minutes, create the ArgoCD `Application` wrapping 
 the Glasskube `ClusterPackage`. After that, the Glasskube operator will pick up the `ClusterPackage` and finally install it in the cluster.
 
-Similarly, when using the Glasskube UI, one can generate the `ClusterPackage` resource by using the "Show YAML" button 
-on the page of the `ClusterPackage`.
+Similarly, when using the Glasskube UI, one can generate the `ClusterPackage` resource by using the "Show YAML" button on the page of the `ClusterPackage`.
 
 ### Updating packages
 
@@ -180,6 +178,8 @@ We are going to make use of the [cloudnativepg dashboard](https://grafana.com/gr
 Import it by opening the [dashboard-import page](http://localhost:8888/dashboard/import), pasting
 [https://grafana.com/grafana/dashboards/20417-cloudnativepg/](https://grafana.com/grafana/dashboards/20417-cloudnativepg/)
 into the first textfield, and pressing "Load". Use the "Prometheus" data source on the following screen and finish the import process.
+
+![CloudNativePG dashboard](https://github.com/user-attachments/assets/d54dcefe-535c-4812-bd80-486558f6caa4)
 
 Of course monitoring your experimental minikube cluster is a bit of an overkill, but this is simply to demonstrate how
 these kind of cluster administration tasks can be integrated into this gitops stack. 
