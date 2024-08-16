@@ -9940,7 +9940,7 @@ spec:
         - --leader-elect
         command:
         - /package-operator
-        image: ghcr.io/glasskube/package-operator:v0.16.0
+        image: ghcr.io/glasskube/package-operator:v0.17.0
         livenessProbe:
           httpGet:
             path: /healthz
