@@ -96,35 +96,19 @@ downside of doing it that way, is that someone has to manually execute the comma
 preparing the updates to the git repository as an automatable task. Renovate is a tool allowing for exactly that kind of
 task, as explained in the following.
 
-#### Proof of Concept: Integrating with Renovate
+#### Integrating with Renovate
 
-Renovate Glasskube Support is still work in progress (see [renovatebot/renovate#29322](https://github.com/renovatebot/renovate/issues/29322)),
-but we will show a proof of concept with the already available datasource/versioning part.
+Glasskube integrates with Renovate in order to simplify package updates.
 
 Therefore, install the [Renovate GitHub App](https://github.com/apps/renovate) and enable it for your GitOps repo.
 
-The renovate configuration of this starter repo (`renovate.json`) contains a `regexManager`, looking for all appearances of
+The renovate configuration of this template repo (`renovate.json`) contains the `glasskube` manager, looking for all appearances
+of Glasskube (`Cluster`-)`Package`s in all the repo's yaml files. 
 
-```yaml
-packageInfo:
-  name: <depName>
-  version: <currentValue>
-```
-
-in all the repo's yaml files. `depName` and `currentValue` will be used by renovate to extract the current version of this (`Cluster`-)`Package`.
-
-The regex-based approach has some limitations (see below) which will be resolved with the custom Glasskube Renovate manager.
-However, we can show that on a general level, Glasskube packages can be updated successfully with this: As soon as one of
-the installed Glasskube packages uses an outdated version, renovate will open a Pull Request to update to the latest version,
+As soon as one of the installed Glasskube packages uses an outdated version, renovate will open a Pull Request to update to the latest version,
 which you only need to approve and merge.
 
-One issue with this regex-based approach is, that `name` and `version` have to appear in that order, even though schematically it would also be correct the other way around.
-
-Another limitation of the current renovate integration is, that it works only with packages of the [public Glasskube package repo](https://github.com/glasskube/packages).
-
-Last but not least, without a dedicated glasskube manager inside renovate, renovate will not be aware of dependencies. 
-That means, it will simply always try to update to the latest version, instead of checking whether an update to that version is 
-actually allowed in the used cluster. As a consequence, this could lead to somebody installing a version that is not allowed 
+Be aware that the Glasskube Renovate manager is not aware of the package dependencies in your cluster. As a consequence, this could lead to somebody installing a version that is not allowed 
 because of dependency restrictions, however, the package operator will not actually install it. 
 The package status would be set to "Failed" with an error message indicating the dependency conflict, 
 but the previously installed version of the package would not be touched/destroyed. In such a case, you would have to manually
@@ -203,11 +187,6 @@ This secret is not commited the git repository.
 If you initially chose to use a public repository, or if you need to change the repo credentials (e.g. because the token expired), you can still do so by adding or updating this secret [manually via ArgoCD](https://argo-cd.readthedocs.io/en/stable/user-guide/private-repositories/).
 
 ## Upcoming Features
-
-### Improved Renovate Integration
-
-As described above, the renovate integration currently is regex-based, and it does not consider dependencies yet.
-However, we don't see these shortcomings as a blocker and recommend to try out the renovate integration in the Glasskube/Argo Gitops setup.
 
 ### Improved Dependency Resolution
 
