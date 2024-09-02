@@ -4,11 +4,6 @@ Use this repository as a template to get started with ArgoCD & Glasskube in minu
 
 ## Getting Started
 
-> At this very early stage, for simplicity your GitHub repository must be public during the bootstrap step.
-> Afterward you can change the visibility of your repository and configure your preferred authentication method in ArgoCD.
-> Additionally, one simple manual change from you will be necessary, as described below.
-> These shortcomings will be resolved in a future version.
-
 ### Prerequisites
 
 #### Access to an empty Kubernetes cluster
@@ -33,7 +28,7 @@ brew install glasskube/tap/glasskube
 
 #### 1. Use this repository as your GitOps template
 
-Create a public GitHub repository based on this starter template. You can move it and/or make it private afterward.
+Create a GitHub repository based on this starter template.
 
 #### 2. Replace the placeholder `repoURL` in your GitOps repository
 
@@ -47,8 +42,13 @@ Replace the default value of `repoURL` to your repository url.
 Make sure you are connected to the right cluster and execute:
 
 ```shell
-glasskube bootstrap git --url <your-repo>
+glasskube bootstrap git --url <your-repo> --username <org-or-username> --token <your-token>
 ```
+
+For public repositories you can omit `--username` and `--token`. 
+
+For private repositories, make sure to [obtain a token from GitHub](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens), 
+that has read access to the repository.
 
 #### Result
 
@@ -64,11 +64,6 @@ Note that it might take a couple of minutes for ArgoCD to start up, and for the 
 
 In this template, for demonstration purposes we also install the `cloudnative-pg` and `kube-prometheus-stack` clusterpackage as well as a bookmarking 
 application ([shiori](https://github.com/go-shiori/shiori)), which is making use of `cloudnative-pg`. 
-
-#### Optional: Temporary: Making your repo private
-
-When the installation has succeeded you are free to make your source repository private. However, make sure to [configure
-the repository correctly](https://argo-cd.readthedocs.io/en/stable/user-guide/private-repositories/) in ArgoCD via UI or CLI, such that Argo can still access this repo. 
 
 ## Managing your cluster
 
@@ -198,13 +193,16 @@ delete/uninstall the `argo-cd` package, as this will also remove everything else
 Note that the parent application used to bootstrap (`bootstrap/glasskube-application.yaml`) will not be synced after the initial setup.
 If you want to change something about it, you will have to change the application via argo directly. 
 
+### Private Repositories
+
+Your gitops repository can be public or private (recommended).
+
+The given username and token are [stored in a secret](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#repositories) by the bootstrap command.
+This secret is not commited the git repository. 
+
+If you initially chose to use a public repository, or if you need to change the repo credentials (e.g. because the token expired), you can still do so by adding or updating this secret [manually via ArgoCD](https://argo-cd.readthedocs.io/en/stable/user-guide/private-repositories/).
+
 ## Upcoming Features
-
-### Private Repo Support
-
-We are aware that GitOps repositories should not be public, but for simplicity we omitted this feature in the first version
-of the new GitOps-bootstrap command. Supporting private repos with authentication of course has high priority for the upcoming releases. 
-We will also replace the `repoURL` automatically, such that you don't need to this step manually when setting up the repo.
 
 ### Improved Renovate Integration
 
@@ -227,7 +225,7 @@ With this template repository and guide we show how Glasskube can easily be set 
 and how efficient package management is possible with this stack. Additionally we install a web application to show how
 custom applications can make use of the Gitops setup and Glasskube packages.
 
-This is a first concept with some minor shortcomings, but we will continue to improve GitOps support. 
+This is still in early stages and therefore has some minor shortcomings, but we will continue to improve GitOps support. 
 
 ### Feedback
 
