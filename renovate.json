@@ -3,16 +3,11 @@
   "extends": [
     "config:recommended"
   ],
-  "regexManagers": [
-    {
-        "fileMatch": [
-          ".+\\.(yaml)|(yml)$"
-        ],
-        "matchStrings": [
-          "packageInfo:.*\n.*name: (?<depName>.*)\n.*\n.*version: (?<currentValue>.*)"
-        ],
-        "datasourceTemplate": "glasskube-packages",
-        "versioningTemplate": "glasskube"
-    }
-  ]
+  "glasskube": {
+    "fileMatch": [
+      "^packages/.*\\.yaml$"
+    ]
+  },
+  "automerge": true,
+  "ignoreTests": true
 }
