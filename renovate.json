@@ -7,5 +7,7 @@
     "fileMatch": [
       ".+\\.(yaml)|(yml)$"
     ]
-  }
+  },
+  "automerge": true,
+  "ignoreTests": true
 }
