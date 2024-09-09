@@ -8493,6 +8493,24 @@ spec:
                     type: string
                   shortDescription:
                     type: string
+                  transitiveResources:
+                    items:
+                      properties:
+                        group:
+                          type: string
+                        kind:
+                          type: string
+                        name:
+                          type: string
+                        version:
+                          type: string
+                      required:
+                      - group
+                      - kind
+                      - name
+                      - version
+                      type: object
+                    type: array
                   valueDefinitions:
                     additionalProperties:
                       properties:
@@ -9912,7 +9930,7 @@ spec:
         - --leader-elect
         command:
         - /package-operator
-        image: ghcr.io/glasskube/package-operator:v0.19.0
+        image: ghcr.io/glasskube/package-operator:v0.20.1
         livenessProbe:
           httpGet:
             path: /healthz
@@ -9992,7 +10010,7 @@ spec:
           containers:
           - command:
             - /cert-manager
-            image: ghcr.io/glasskube/package-operator:v0.19.0
+            image: ghcr.io/glasskube/package-operator:v0.20.1
             name: manager
             resources:
               limits:
@@ -10025,7 +10043,7 @@ spec:
       containers:
       - command:
         - /cert-manager
-        image: ghcr.io/glasskube/package-operator:v0.19.0
+        image: ghcr.io/glasskube/package-operator:v0.20.1
         name: manager
         resources:
           limits:
