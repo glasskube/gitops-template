@@ -36,7 +36,7 @@ Replace the default value of `repoURL` to your repository url.
 
 - Line 12 in: [`bootstrap/glasskube-application.yaml`](bootstrap/glasskube-application.yaml#L12)
 - Lines 11, 16 and 26 in: [`bootstrap/glasskube/applicationset.yaml`](bootstrap/glasskube/applicationset.yaml#L11-L26)
-- Save and commit changes to your target package repository.
+- Commit and push changes to your target git repository.
 
 #### 3. Bootstrap ArgoCD and Glasskube for your Kubernetes cluster
 
