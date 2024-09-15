@@ -12,8 +12,11 @@ The easiest would be creating a new [Minikube](https://minikube.sigs.k8s.io/docs
 
 ```shell
 minikube start -p gitops
+minikube addons enable ingress -p gitops 
+minikube addons enable metrics-server -p gitops 
 ````
-Glasskube should not yet be bootstrapped in that cluster
+Glasskube should not yet be bootstrapped in that cluster.
+Enabling an the ingress and metrics-server addon makes sure the demo application will be successfully installed.
 
 #### Install the Glasskube CLI
 
