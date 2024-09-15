@@ -16,7 +16,7 @@ minikube addons enable ingress -p gitops
 minikube addons enable metrics-server -p gitops 
 ````
 Glasskube should not yet be bootstrapped in that cluster.
-Enabling an the ingress and metrics-server addon makes sure the demo application will be successfully installed.
+Enabling the ingress and metrics-server addon ensures the demo application will be successfully installed.
 
 #### Install the Glasskube CLI
 
@@ -31,7 +31,7 @@ brew install glasskube/tap/glasskube
 
 #### 1. Use this repository as your GitOps template
 
-Create a GitHub repository based on this starter template.
+Create a GitHub repository based on this starter template (see the green "Use this template" button).
 
 #### 2. Replace the placeholder `repoURL` in your GitOps repository
 
@@ -40,6 +40,17 @@ Replace the default value of `repoURL` to your repository url.
 - Line 12 in: [`bootstrap/glasskube-application.yaml`](bootstrap/glasskube-application.yaml#L12)
 - Lines 11, 16 and 26 in: [`bootstrap/glasskube/applicationset.yaml`](bootstrap/glasskube/applicationset.yaml#L11-L26)
 - Commit and push changes to your target git repository.
+
+You can also execute following shell commands:
+
+```shell
+export USERNAME=user # replace user with your github username
+export REPO=repo # replace repo with the repository name of your git-ops repository
+sed -i 's/TODO\/TODO/'$USERNAME'\/'$REPO'/g' bootstrap/glasskube/applicationset.yaml
+sed -i 's/TODO\/TODO/'$USERNAME'\/'$REPO'/g' bootstrap/glasskube-application.yaml
+git commit -m "chore: configure source git repository"
+git push
+```
 
 #### 3. Bootstrap ArgoCD and Glasskube for your Kubernetes cluster
 
