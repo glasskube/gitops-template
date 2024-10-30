@@ -6,7 +6,7 @@ spec:
   packageInfo:
     name: kube-prometheus-stack
     repositoryName: glasskube
-    version: v62.7.0+1
+    version: v65.5.0+1
   values:
     alertmanagerEnabled:
       value: "false"
