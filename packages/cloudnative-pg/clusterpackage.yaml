@@ -6,5 +6,5 @@ spec:
   packageInfo:
     name: cloudnative-pg
     repositoryName: glasskube
-    version: v1.24.1+1
+    version: v1.25.0+1
 
