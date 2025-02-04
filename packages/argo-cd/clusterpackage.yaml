@@ -6,4 +6,4 @@ spec:
   packageInfo:
     name: argo-cd
     repositoryName: glasskube
-    version: v2.13.1+1
+    version: v2.14.1+1
